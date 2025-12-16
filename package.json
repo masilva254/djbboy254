@@ -13,6 +13,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "mongoose": "^8.0.3",
+    "ioredis": "^5.3.2",
     "redis": "^4.6.13",
     "cloudinary": "^1.41.0",
     "multer": "^1.4.5-lts.1",
