@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - MixHub</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            50: '#64748b',
+                            100: '#475569',
+                            200: '#334155',
+                            300: '#1e293b',
+                            400: '#0f172a',
+                            500: '#020617',
+                            600: '#01050f',
+                            700: '#01040a',
+                            800: '#010307',
+                            900: '#000204',
+                        },
+                        neon: {
+                            blue: '#00f0ff',
+                            pink: '#ff00ff',
+                            purple: '#b967ff',
+                            cyan: '#00ffff',
+                            green: '#00ff9d',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'wave': 'wave 1.5s linear infinite',
+                        'equalizer': 'equalizer 1.5s ease infinite',
+                        'spin-slow': 'spin 3s linear infinite',
+                        'neon-pulse': 'neonPulse 1.5s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        glow: {
+                            'from': { 
+                                boxShadow: '0 0 10px #00f0ff, 0 0 20px #00f0ff, 0 0 30px #00f0ff' 
+                            },
+                            'to': { 
+                                boxShadow: '0 0 20px #00f0ff, 0 0 30px #00f0ff, 0 0 40px #00f0ff' 
+                            },
+                        },
+                        wave: {
+                            '0%': { transform: 'scaleY(0.4)' },
+                            '50%': { transform: 'scaleY(1)' },
+                            '100%': { transform: 'scaleY(0.4)' },
+                        },
+                        equalizer: {
+                            '0%, 100%': { transform: 'scaleY(0.3)' },
+                            '50%': { transform: 'scaleY(1)' },
+                        },
+                        neonPulse: {
+                            '0%, 100%': { opacity: '1' },
+                            '50%': { opacity: '0.5' },
+                        }
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                        'gradient-neon': 'linear-gradient(135deg, #00f0ff, #b967ff, #ff00ff)',
+                        'gradient-dark': 'linear-gradient(to bottom right, #0f172a, #1e293b)',
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/styles/main.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎵</text></svg>">
+</head>
+<body class="bg-gradient-to-br from-dark-900 via-dark-800 to-dark-900 text-white min-h-screen">
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-dark-800/80 backdrop-blur-lg border-b border-dark-600">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <a href="/dashboard" class="flex items-center gap-2">
+                    <div class="w-10 h-10 bg-gradient-neon rounded-xl flex items-center justify-center">
+                        <i class="fas fa-music text-white"></i>
+                    </div>
+                    <span class="text-2xl font-bold bg-gradient-to-r from-neon-blue via-neon-purple to-neon-pink bg-clip-text text-transparent">
+                        MixHub
+                    </span>
+                </a>
+                
+                <!-- Navigation Links -->
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="/dashboard" class="text-neon-blue">
+                        <i class="fas fa-home mr-2"></i> Dashboard
+                    </a>
+                    <a href="/player" class="hover:text-neon-blue transition-colors">
+                        <i class="fas fa-play mr-2"></i> Player
+                    </a>
+                    <a href="/equalizer" class="hover:text-neon-blue transition-colors">
+                        <i class="fas fa-sliders-h mr-2"></i> Equalizer
+                    </a>
+                    <a href="/upload" class="hover:text-neon-blue transition-colors">
+                        <i class="fas fa-upload mr-2"></i> Upload
+                    </a>
+                    <a href="/playlists" class="hover:text-neon-blue transition-colors">
+                        <i class="fas fa-list-music mr-2"></i> Playlists
+                    </a>
+                </div>
+                
+                <!-- Search and User -->
+                <div class="flex items-center gap-4">
+                    <!-- Search -->
+                    <div class="relative hidden md:block">
+                        <input 
+                            type="text" 
+                            id="searchInput"
+                            placeholder="Search mixes..."
+                            class="pl-10 pr-4 py-2 bg-dark-700 border border-dark-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent w-64"
+                        >
+                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                    
+                    <!-- User Menu -->
+                    <button id="themeToggle" class="p-2 hover:bg-dark-600 rounded-lg">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <a href="/profile" class="flex items-center gap-2 hover:bg-dark-600 p-2 rounded-lg">
+                        <div class="w-8 h-8 bg-gradient-neon rounded-full"></div>
+                        <span class="hidden md:inline">Profile</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Mobile Search -->
+            <div class="mt-3 md:hidden">
+                <div class="relative">
+                    <input 
+                        type="text" 
+                        id="searchInputMobile"
+                        placeholder="Search mixes..."
+                        class="w-full pl-10 pr-4 py-2 bg-dark-700 border border-dark-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent"
+                    >
+                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="pt-24 pb-20">
+        <div class="container mx-auto px-4">
+            <!-- Header -->
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold mb-2">DJ BBOY Mixes</h1>
+                <p class="text-gray-400">Browse and play mixes from the channel</p>
+            </div>
+            
+            <!-- Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <div class="bg-gradient-to-br from-dark-700/50 to-dark-800/50 backdrop-blur-lg rounded-2xl p-4 border border-dark-600">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2 bg-gradient-neon rounded-lg">
+                            <i class="fas fa-music"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-400">Total Mixes</p>
+                            <p class="text-2xl font-bold" id="totalMixes">--</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-br from-dark-700/50 to-dark-800/50 backdrop-blur-lg rounded-2xl p-4 border border-dark-600">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2 bg-gradient-neon rounded-lg">
+                            <i class="fas fa-headphones"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-400">Now Playing</p>
+                            <p class="text-2xl font-bold" id="nowPlaying">--</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-br from-dark-700/50 to-dark-800/50 backdrop-blur-lg rounded-2xl p-4 border border-dark-600">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2 bg-gradient-neon rounded-lg">
+                            <i class="fas fa-download"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-400">Downloads</p>
+                            <p class="text-2xl font-bold" id="totalDownloads">--</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-br from-dark-700/50 to-dark-800/50 backdrop-blur-lg rounded-2xl p-4 border border-dark-600">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2 bg-gradient-neon rounded-lg">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-400">Listeners</p>
+                            <p class="text-2xl font-bold" id="activeListeners">--</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Controls -->
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
+                <div class="flex items-center gap-4">
+                    <button id="refreshBtn" class="px-4 py-2 bg-dark-700 hover:bg-dark-600 rounded-lg transition-colors">
+                        <i class="fas fa-sync-alt mr-2"></i> Refresh
+                    </button>
+                    
+                    <div class="flex items-center gap-2">
+                        <button id="viewGrid" class="p-2 bg-dark-700 hover:bg-dark-600 rounded-lg transition-colors">
+                            <i class="fas fa-th-large"></i>
+                        </button>
+                        <button id="viewList" class="p-2 bg-dark-700 hover:bg-dark-600 rounded-lg transition-colors">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-4">
+                    <div class="relative">
+                        <select id="sortSelect" class="pl-4 pr-10 py-2 bg-dark-700 border border-dark-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent appearance-none">
+                            <option value="newest">Newest First</option>
+                            <option value="oldest">Oldest First</option>
+                            <option value="popular">Most Popular</option>
+                            <option value="title">Title A-Z</option>
+                        </select>
+                        <i class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"></i>
+                    </div>
+                    
+                    <button id="shuffleAll" class="px-4 py-2 bg-gradient-neon rounded-lg font-semibold hover:opacity-90 transition-opacity">
+                        <i class="fas fa-random mr-2"></i> Shuffle All
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Videos Grid -->
+            <div id="videosContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Videos will be loaded here by JavaScript -->
+                <div class="col-span-full text-center py-12">
+                    <div class="spinner mx-auto mb-4"></div>
+                    <p class="text-gray-400">Loading channel mixes...</p>
+                </div>
+            </div>
+            
+            <!-- Pagination -->
+            <div id="pagination" class="mt-12 flex justify-center hidden">
+                <div class="flex items-center gap-2">
+                    <button class="p-2 bg-dark-700 hover:bg-dark-600 rounded-lg">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <span class="px-3 py-2">Page 1 of 1</span>
+                    <button class="p-2 bg-dark-700 hover:bg-dark-600 rounded-lg">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Player Bar -->
+    <div id="playerBar" class="fixed bottom-0 left-0 right-0 bg-dark-800 border-t border-dark-600 hidden">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <!-- Current Track -->
+                <div class="flex items-center gap-3 flex-1 min-w-0">
+                    <img id="playerBarThumbnail" src="" alt="" class="w-10 h-10 rounded-lg">
+                    <div class="min-w-0">
+                        <p id="playerBarTitle" class="font-semibold truncate">No track playing</p>
+                        <p id="playerBarArtist" class="text-sm text-gray-400 truncate">DJ BBOY</p>
+                    </div>
+                </div>
+                
+                <!-- Controls -->
+                <div class="flex items-center gap-4">
+                    <button id="playerBarPrev" class="p-2 hover:bg-dark-700 rounded-lg">
+                        <i class="fas fa-step-backward"></i>
+                    </button>
+                    
+                    <button id="playerBarPlay" class="w-10 h-10 bg-gradient-neon rounded-full flex items-center justify-center">
+                        <i class="fas fa-play"></i>
+                    </button>
+                    
+                    <button id="playerBarNext" class="p-2 hover:bg-dark-700 rounded-lg">
+                        <i class="fas fa-step-forward"></i>
+                    </button>
+                </div>
+                
+                <!-- Progress and Volume -->
+                <div class="flex items-center gap-4 flex-1 justify-end">
+                    <div class="hidden md:flex items-center gap-2 text-sm">
+                        <span id="playerBarCurrent">0:00</span>
+                        <div class="w-32 h-1 bg-dark-600 rounded-full overflow-hidden">
+                            <div id="playerBarProgress" class="h-full bg-gradient-neon rounded-full" style="width: 0%"></div>
+                        </div>
+                        <span id="playerBarDuration">0:00</span>
+                    </div>
+                    
+                    <button class="p-2 hover:bg-dark-700 rounded-lg">
+                        <i class="fas fa-volume-up"></i>
+                    </button>
+                    
+                    <a href="/player" class="p-2 hover:bg-dark-700 rounded-lg">
+                        <i class="fas fa-expand"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="bg-dark-800 border-t border-dark-600 py-6 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="text-center">
+                <p class="text-gray-400">&copy; 2025 MixHub. All rights reserved.</p>
+                <p class="text-gray-500 text-sm mt-2">Powered by DJ BBOY • Created by developer wanga</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Audio Element -->
+    <audio id="audioElement" preload="none"></audio>
+    
+    <!-- JavaScript -->
+    <script src="/js/app.js"></script>
+    <script>
+        // Dashboard specific JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize dashboard
+            loadDashboardData();
+            
+            // Event listeners
+            document.getElementById('refreshBtn').addEventListener('click', loadDashboardData);
+            document.getElementById('searchInput').addEventListener('input', debounce(searchMixes, 300));
+            document.getElementById('searchInputMobile').addEventListener('input', debounce(searchMixes, 300));
+            document.getElementById('shuffleAll').addEventListener('click', shuffleAllMixes);
+            document.getElementById('sortSelect').addEventListener('change', sortMixes);
+            document.getElementById('viewGrid').addEventListener('click', () => setViewMode('grid'));
+            document.getElementById('viewList').addEventListener('click', () => setViewMode('list'));
+            
+            // Theme toggle
+            document.getElementById('themeToggle').addEventListener('click', function() {
+                const isDark = document.documentElement.classList.contains('dark');
+                if (isDark) {
+                    document.documentElement.classList.remove('dark');
+                    this.innerHTML = '<i class="fas fa-sun"></i>';
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    this.innerHTML = '<i class="fas fa-moon"></i>';
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+        });
+        
+        let currentViewMode = 'grid';
+        let allVideos = [];
+        
+        async function loadDashboardData() {
+            try {
+                showLoading();
+                
+                const response = await fetch('/api/channel/videos');
+                const data = await response.json();
+                
+                if (data.success) {
+                    allVideos = data.videos;
+                    
+                    // Update stats
+                    document.getElementById('totalMixes').textContent = data.total;
+                    document.getElementById('nowPlaying').textContent = '0';
+                    document.getElementById('totalDownloads').textContent = '45.8K';
+                    document.getElementById('activeListeners').textContent = '2.4K';
+                    
+                    // Render videos
+                    renderVideos(allVideos);
+                    
+                    // Show pagination if needed
+                    if (data.total > 20) {
+                        document.getElementById('pagination').classList.remove('hidden');
+                    }
+                }
+            } catch (error) {
+                console.error('Failed to load dashboard:', error);
+                document.getElementById('videosContainer').innerHTML = `
+                    <div class="col-span-full text-center py-12">
+                        <i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-4"></i>
+                        <p class="text-gray-400">Failed to load mixes. Please try again.</p>
+                        <button onclick="loadDashboardData()" class="mt-4 px-4 py-2 bg-gradient-neon rounded-lg">
+                            Retry
+                        </button>
+                    </div>
+                `;
+            } finally {
+                hideLoading();
+            }
+        }
+        
+        function renderVideos(videos) {
+            const container = document.getElementById('videosContainer');
+            
+            if (videos.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-12">
+                        <i class="fas fa-music text-4xl text-gray-500 mb-4"></i>
+                        <p class="text-gray-400">No mixes found</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            if (currentViewMode === 'grid') {
+                container.innerHTML = videos.map(video => `
+                    <div class="card-hover bg-gradient-to-br from-dark-700/50 to-dark-800/50 backdrop-blur-lg rounded-2xl overflow-hidden border border-dark-600 hover:border-neon-blue/50 transition-all">
+                        <div class="relative h-48 overflow-hidden">
+                            <img 
+                                src="${video.thumbnail}" 
+                                alt="${video.title}"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                loading="lazy"
+                                onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 300%22><rect width=%22100%25%22 height=%22100%25%22 fill=%22%231e293b%22/><text x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22white%22 font-family=%22sans-serif%22>${encodeURIComponent(video.title.substring(0, 20))}</text></svg>'"
+                            >
+                            <div class="absolute inset-0 bg-gradient-to-t from-dark-900 via-transparent to-transparent opacity-70"></div>
+                            
+                            <button 
+                                onclick="playMix('${video.videoId}', '${video.title.replace(/'/g, "\\'")}')"
+                                class="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity"
+                            >
+                                <div class="w-16 h-16 bg-gradient-neon rounded-full flex items-center justify-center">
+                                    <i class="fas fa-play text-white text-xl"></i>
+                                </div>
+                            </button>
+                            
+                            <div class="absolute top-3 right-3 px-2 py-1 bg-dark-900/80 backdrop-blur-sm rounded-lg text-xs">
+                                1:18:02
+                            </div>
+                        </div>
+                        
+                        <div class="p-4">
+                            <h4 class="font-bold text-lg mb-2 line-clamp-2">${video.title}</h4>
+                            <p class="text-sm text-neon-blue mb-3">${video.channelTitle || 'DJ BBOY'}</p>
+                            
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <button 
+                                        onclick="toggleFavorite('${video.videoId}', this)"
+                                        class="p-2 rounded-lg text-gray-400 hover:text-red-500 hover:bg-dark-700 transition-all"
+                                        title="Add to favorites"
+                                    >
+                                        <i class="far fa-heart"></i>
+                                    </button>
+                                    
+                                    <button 
+                                        onclick="downloadMix('${video.videoId}', '${video.title.replace(/'/g, "\\'")}')"
+                                        class="p-2 rounded-lg text-gray-400 hover:text-neon-blue hover:bg-dark-700 transition-all"
+                                        title="Download"
+                                    >
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                </div>
+                                
+                                <span class="text-xs text-gray-400">
+                                    ${new Date(video.publishedAt).toLocaleDateString()}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                // List view
+                container.innerHTML = videos.map(video => `
+                    <div class="card-hover bg-gradient-to-br from-dark-700/50 to-dark-800/50 backdrop-blur-lg rounded-2xl p-4 border border-dark-600 hover:border-neon-blue/50 transition-all">
+                        <div class="flex items-center gap-4">
+                            <div class="relative">
+                                <img 
+                                    src="${video.thumbnail}" 
+                                    alt="${video.title}"
+                                    class="w-16 h-16 rounded-lg object-cover"
+                                    loading="lazy"
+                                >
+                                <button 
+                                    onclick="playMix('${video.videoId}', '${video.title.replace(/'/g, "\\'")}')"
+                                    class="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 hover:opacity-100 transition-opacity rounded-lg"
+                                >
+                                    <i class="fas fa-play text-white"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="flex-1 min-w-0">
+                                <h4 class="font-bold mb-1 line-clamp-1">${video.title}</h4>
+                                <p class="text-sm text-neon-blue mb-2">${video.channelTitle || 'DJ BBOY'}</p>
+                                <div class="flex items-center gap-4 text-xs text-gray-400">
+                                    <span>1:18:02</span>
+                                    <span>•</span>
+                                    <span>${new Date(video.publishedAt).toLocaleDateString()}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center gap-2">
+                                <button 
+                                    onclick="toggleFavorite('${video.videoId}', this)"
+                                    class="p-2 rounded-lg text-gray-400 hover:text-red-500 hover:bg-dark-700 transition-all"
+                                >
+                                    <i class="far fa-heart"></i>
+                                </button>
+                                
+                                <button 
+                                    onclick="downloadMix('${video.videoId}', '${video.title.replace(/'/g, "\\'")}')"
+                                    class="p-2 rounded-lg text-gray-400 hover:text-neon-blue hover:bg-dark-700 transition-all"
+                                >
+                                    <i class="fas fa-download"></i>
+                                </button>
+                                
+                                <button class="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-dark-700 transition-all">
+                                    <i class="fas fa-ellipsis-h"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+        
+        function searchMixes() {
+            const searchTerm = document.getElementById('searchInput').value || 
+                              document.getElementById('searchInputMobile').value;
+            
+            if (!searchTerm.trim()) {
+                renderVideos(allVideos);
+                return;
+            }
+            
+            const filtered = allVideos.filter(video => 
+                video.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                video.description?.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            
+            renderVideos(filtered);
+            
+            // Update stats
+            document.getElementById('totalMixes').textContent = filtered.length;
+        }
+        
+        function shuffleAllMixes() {
+            const shuffled = [...allVideos].sort(() => Math.random() - 0.5);
+            renderVideos(shuffled);
+        }
+        
+        function sortMixes() {
+            const sortBy = document.getElementById('sortSelect').value;
+            let sorted = [...allVideos];
+            
+            switch (sortBy) {
+                case 'newest':
+                    sorted.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+                    break;
+                case 'oldest':
+                    sorted.sort((a, b) => new Date(a.publishedAt) - new Date(b.publishedAt));
+                    break;
+                case 'title':
+                    sorted.sort((a, b) => a.title.localeCompare(b.title));
+                    break;
+                case 'popular':
+                    // In production, sort by play count
+                    sorted.sort(() => Math.random() - 0.5); // Random for now
+                    break;
+            }
+            
+            renderVideos(sorted);
+        }
+        
+        function setViewMode(mode) {
+            currentViewMode = mode;
+            renderVideos(allVideos);
+            
+            // Update button states
+            const gridBtn = document.getElementById('viewGrid');
+            const listBtn = document.getElementById('viewList');
+            
+            if (mode === 'grid') {
+                gridBtn.classList.add('bg-dark-600');
+                listBtn.classList.remove('bg-dark-600');
+            } else {
+                gridBtn.classList.remove('bg-dark-600');
+                listBtn.classList.add('bg-dark-600');
+            }
+        }
+        
+        function showLoading() {
+            document.getElementById('videosContainer').innerHTML = `
+                <div class="col-span-full text-center py-12">
+                    <div class="spinner mx-auto mb-4"></div>
+                    <p class="text-gray-400">Loading channel mixes...</p>
+                </div>
+            `;
+        }
+        
+        function hideLoading() {
+            // Loading state is handled by renderVideos
+        }
+        
+        // Debounce function
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+        
+        // Make functions available globally
+        window.toggleFavorite = function(videoId, button) {
+            const icon = button.querySelector('i');
+            if (icon.classList.contains('far')) {
+                icon.classList.replace('far', 'fas');
+                icon.classList.add('text-red-500');
+                showNotification('Added to favorites');
+            } else {
+                icon.classList.replace('fas', 'far');
+                icon.classList.remove('text-red-500');
+                showNotification('Removed from favorites');
+            }
+        };
+        
+        function showNotification(message) {
+            // Create notification
+            const notification = document.createElement('div');
+            notification.className = 'fixed bottom-20 right-4 z-50 px-4 py-2 bg-gradient-neon rounded-lg animate-fade-in';
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
