@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MixHub - DJ BBOY Mixes</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            50: '#64748b',
+                            100: '#475569',
+                            200: '#334155',
+                            300: '#1e293b',
+                            400: '#0f172a',
+                            500: '#020617',
+                            600: '#01050f',
+                            700: '#01040a',
+                            800: '#010307',
+                            900: '#000204',
+                        },
+                        neon: {
+                            blue: '#00f0ff',
+                            pink: '#ff00ff',
+                            purple: '#b967ff',
+                            cyan: '#00ffff',
+                            green: '#00ff9d',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'wave': 'wave 1.5s linear infinite',
+                        'equalizer': 'equalizer 1.5s ease infinite',
+                        'spin-slow': 'spin 3s linear infinite',
+                        'neon-pulse': 'neonPulse 1.5s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        glow: {
+                            'from': { 
+                                boxShadow: '0 0 10px #00f0ff, 0 0 20px #00f0ff, 0 0 30px #00f0ff' 
+                            },
+                            'to': { 
+                                boxShadow: '0 0 20px #00f0ff, 0 0 30px #00f0ff, 0 0 40px #00f0ff' 
+                            },
+                        },
+                        wave: {
+                            '0%': { transform: 'scaleY(0.4)' },
+                            '50%': { transform: 'scaleY(1)' },
+                            '100%': { transform: 'scaleY(0.4)' },
+                        },
+                        equalizer: {
+                            '0%, 100%': { transform: 'scaleY(0.3)' },
+                            '50%': { transform: 'scaleY(1)' },
+                        },
+                        neonPulse: {
+                            '0%, 100%': { opacity: '1' },
+                            '50%': { opacity: '0.5' },
+                        }
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                        'gradient-neon': 'linear-gradient(135deg, #00f0ff, #b967ff, #ff00ff)',
+                        'gradient-dark': 'linear-gradient(to bottom right, #0f172a, #1e293b)',
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/styles/main.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎵</text></svg>">
+</head>
+<body class="bg-gradient-to-br from-dark-900 via-dark-800 to-dark-900 text-white min-h-screen">
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-dark-800/80 backdrop-blur-lg border-b border-dark-600">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <a href="/dashboard" class="flex items-center gap-2">
+                    <div class="w-10 h-10 bg-gradient-neon rounded-xl flex items-center justify-center">
+                        <i class="fas fa-music text-white"></i>
+                    </div>
+                    <span class="text-2xl font-bold bg-gradient-to-r from-neon-blue via-neon-purple to-neon-pink bg-clip-text text-transparent">
+                        MixHub
+                    </span>
+                </a>
+                
+                <!-- Navigation Links -->
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="/dashboard" class="hover:text-neon-blue transition-colors">
+                        <i class="fas fa-home mr-2"></i> Dashboard
+                    </a>
+                    <a href="/player" class="hover:text-neon-blue transition-colors">
+                        <i class="fas fa-play mr-2"></i> Player
+                    </a>
+                    <a href="/equalizer" class="hover:text-neon-blue transition-colors">
+                        <i class="fas fa-sliders-h mr-2"></i> Equalizer
+                    </a>
+                    <a href="/upload" class="hover:text-neon-blue transition-colors">
+                        <i class="fas fa-upload mr-2"></i> Upload
+                    </a>
+                    <a href="/playlists" class="hover:text-neon-blue transition-colors">
+                        <i class="fas fa-list-music mr-2"></i> Playlists
+                    </a>
+                </div>
+                
+                <!-- User Menu -->
+                <div class="flex items-center gap-4">
+                    <button id="themeToggle" class="p-2 hover:bg-dark-600 rounded-lg">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <a href="/profile" class="flex items-center gap-2 hover:bg-dark-600 p-2 rounded-lg">
+                        <div class="w-8 h-8 bg-gradient-neon rounded-full"></div>
+                        <span class="hidden md:inline">Profile</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="pt-20">
+        <!-- Hero Section -->
+        <section class="relative overflow-hidden py-16">
+            <div class="absolute inset-0 bg-gradient-neon opacity-5"></div>
+            <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cdefs%3E%3Cpattern id=%22grid%22 width=%2260%22 height=%2260%22 patternUnits=%22userSpaceOnUse%22%3E%3Cpath d=%22M 60 0 L 0 0 0 60%22 fill=%22none%22 stroke=%22rgba(0,240,255,0.1)%22 stroke-width=%221%22/%3E%3C/pattern%3E%3C/defs%3E%3Crect width=%22100%25%22 height=%22100%25%22 fill=%22url(%23grid)%22/%3E%3C/svg%3E')]"></div>
+            
+            <div class="container mx-auto px-4 relative">
+                <div class="max-w-4xl mx-auto text-center">
+                    <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-float">
+                        <span class="bg-gradient-to-r from-neon-blue via-neon-purple to-neon-pink bg-clip-text text-transparent">
+                            DJ BBOY Mixes
+                        </span>
+                    </h1>
+                    <p class="text-xl text-gray-300 mb-8">
+                        Unlimited streaming and downloads from your favorite channel
+                    </p>
+                    
+                    <!-- Animated Sound Waves -->
+                    <div class="flex items-center justify-center h-20 mb-8 gap-1">
+                        <div class="w-1 h-10 bg-gradient-to-t from-neon-blue to-neon-purple rounded-full animate-wave"></div>
+                        <div class="w-1 h-14 bg-gradient-to-t from-neon-purple to-neon-pink rounded-full animate-wave" style="animation-delay: 0.1s"></div>
+                        <div class="w-1 h-16 bg-gradient-to-t from-neon-pink to-neon-blue rounded-full animate-wave" style="animation-delay: 0.2s"></div>
+                        <div class="w-1 h-18 bg-gradient-to-t from-neon-blue to-neon-purple rounded-full animate-wave" style="animation-delay: 0.3s"></div>
+                        <div class="w-1 h-20 bg-gradient-to-t from-neon-purple to-neon-pink rounded-full animate-wave" style="animation-delay: 0.4s"></div>
+                        <div class="w-1 h-18 bg-gradient-to-t from-neon-pink to-neon-blue rounded-full animate-wave" style="animation-delay: 0.5s"></div>
+                        <div class="w-1 h-16 bg-gradient-to-t from-neon-blue to-neon-purple rounded-full animate-wave" style="animation-delay: 0.6s"></div>
+                        <div class="w-1 h-14 bg-gradient-to-t from-neon-purple to-neon-pink rounded-full animate-wave" style="animation-delay: 0.7s"></div>
+                        <div class="w-1 h-10 bg-gradient-to-t from-neon-pink to-neon-blue rounded-full animate-wave" style="animation-delay: 0.8s"></div>
+                    </div>
+                    
+                    <!-- CTA Buttons -->
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="/dashboard" class="px-8 py-4 bg-gradient-neon rounded-xl font-bold hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
+                            <i class="fas fa-play"></i> Start Listening
+                        </a>
+                        <a href="/player" class="px-8 py-4 bg-dark-700 border border-dark-600 rounded-xl font-bold hover:bg-dark-600 transition-colors flex items-center justify-center gap-2">
+                            <i class="fas fa-music"></i> Go to Player
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Features -->
+        <section class="py-16">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold text-center mb-12">Why Choose MixHub</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Feature 1 -->
+                    <div class="bg-gradient-to-br from-dark-700/50 to-dark-800/50 backdrop-blur-lg rounded-2xl p-6 border border-dark-600 hover:border-neon-blue/50 transition-all">
+                        <div class="w-12 h-12 bg-gradient-neon rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-infinity text-white text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">Unlimited Downloads</h3>
+                        <p class="text-gray-400">Download as many mixes as you want with no restrictions or limits.</p>
+                    </div>
+                    
+                    <!-- Feature 2 -->
+                    <div class="bg-gradient-to-br from-dark-700/50 to-dark-800/50 backdrop-blur-lg rounded-2xl p-6 border border-dark-600 hover:border-neon-blue/50 transition-all">
+                        <div class="w-12 h-12 bg-gradient-neon rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-bolt text-white text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">High Quality Audio</h3>
+                        <p class="text-gray-400">Stream and download in multiple formats including 320kbps MP3.</p>
+                    </div>
+                    
+                    <!-- Feature 3 -->
+                    <div class="bg-gradient-to-br from-dark-700/50 to-dark-800/50 backdrop-blur-lg rounded-2xl p-6 border border-dark-600 hover:border-neon-blue/50 transition-all">
+                        <div class="w-12 h-12 bg-gradient-neon rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-wave-square text-white text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">Visual Equalizer</h3>
+                        <p class="text-gray-400">Customize your audio with our advanced equalizer and sound effects.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Quick Stats -->
+        <section class="py-16">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-gradient-to-br from-dark-700/50 to-dark-800/50 backdrop-blur-lg rounded-2xl p-6 text-center">
+                        <div class="text-3xl font-bold text-neon-blue mb-2">50+</div>
+                        <div class="text-gray-400">Channel Mixes</div>
+                    </div>
+                    <div class="bg-gradient-to-br from-dark-700/50 to-dark-800/50 backdrop-blur-lg rounded-2xl p-6 text-center">
+                        <div class="text-3xl font-bold text-neon-purple mb-2">1.2M</div>
+                        <div class="text-gray-400">Total Plays</div>
+                    </div>
+                    <div class="bg-gradient-to-br from-dark-700/50 to-dark-800/50 backdrop-blur-lg rounded-2xl p-6 text-center">
+                        <div class="text-3xl font-bold text-neon-pink mb-2">45.8K</div>
+                        <div class="text-gray-400">Downloads</div>
+                    </div>
+                    <div class="bg-gradient-to-br from-dark-700/50 to-dark-800/50 backdrop-blur-lg rounded-2xl p-6 text-center">
+                        <div class="text-3xl font-bold text-neon-cyan mb-2">24/7</div>
+                        <div class="text-gray-400">Available</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Call to Action -->
+        <section class="py-16">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="text-3xl font-bold mb-6">Ready to Dive In?</h2>
+                <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+                    Start streaming your favorite mixes right now. No registration required!
+                </p>
+                <a href="/dashboard" class="inline-block px-8 py-4 bg-gradient-neon rounded-xl font-bold hover:opacity-90 transition-opacity text-lg">
+                    Explore All Mixes <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-dark-800 border-t border-dark-600">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <div class="flex items-center gap-2 mb-2">
+                        <div class="w-8 h-8 bg-gradient-neon rounded-xl flex items-center justify-center">
+                            <i class="fas fa-music text-white"></i>
+                        </div>
+                        <span class="text-xl font-bold">MixHub</span>
+                    </div>
+                    <p class="text-gray-400 text-sm">Powered by DJ BBOY</p>
+                </div>
+                
+                <div class="flex flex-wrap justify-center gap-6 mb-4 md:mb-0">
+                    <a href="/dashboard" class="text-gray-400 hover:text-white transition-colors">Dashboard</a>
+                    <a href="/player" class="text-gray-400 hover:text-white transition-colors">Player</a>
+                    <a href="/equalizer" class="text-gray-400 hover:text-white transition-colors">Equalizer</a>
+                    <a href="/upload" class="text-gray-400 hover:text-white transition-colors">Upload</a>
+                    <a href="/playlists" class="text-gray-400 hover:text-white transition-colors">Playlists</a>
+                    <a href="/profile" class="text-gray-400 hover:text-white transition-colors">Profile</a>
+                </div>
+                
+                <div class="text-center md:text-right">
+                    <p class="text-gray-400 text-sm mb-2">&copy; 2025 MixHub. All rights reserved.</p>
+                    <p class="text-gray-500 text-xs">Created by developer wanga</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Audio Player (Global) -->
+    <div id="globalPlayer" class="hidden">
+        <audio id="audioElement" preload="none"></audio>
+    </div>
+    
+    <!-- JavaScript -->
+    <script src="/js/app.js"></script>
+    <script>
+        // Theme toggle
+        document.getElementById('themeToggle').addEventListener('click', function() {
+            const isDark = document.documentElement.classList.contains('dark');
+            if (isDark) {
+                document.documentElement.classList.remove('dark');
+                this.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                document.documentElement.classList.add('dark');
+                this.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        });
+    </script>
+</body>
+</html>
