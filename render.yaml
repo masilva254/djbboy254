@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: mixhub
+    env: node
+    buildCommand: |
+      cd server && npm install
+      mkdir -p ../public/uploads
+    startCommand: cd server && node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: YOUTUBE_API_KEY
+        sync: false
+      - key: YOUTUBE_CHANNEL_ID
+        sync: false
+      - key: GIFTED_API_KEY
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+    disk:
+      name: uploads
+      mountPath: /opt/render/project/src/server/uploads
+      sizeGB: 1
