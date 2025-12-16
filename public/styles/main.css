@@ -1,0 +1,299 @@
+/* Main CSS for MixHub */
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(15, 23, 42, 0.5);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #00f0ff, #b967ff, #ff00ff);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #00ffff, #b967ff, #ff00ff);
+    opacity: 0.8;
+}
+
+/* Selection Color */
+::selection {
+    background: rgba(0, 240, 255, 0.3);
+    color: white;
+}
+
+/* Smooth transitions */
+* {
+    transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+
+/* Loading animation */
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+.loading-shimmer {
+    background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite linear;
+}
+
+/* Waveform bars */
+.waveform-bar {
+    animation: equalizer 1.5s ease infinite;
+    animation-play-state: paused;
+}
+
+.waveform-bar.playing {
+    animation-play-state: running;
+}
+
+/* Glass effect */
+.glass-effect {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Neon text effect */
+.neon-text {
+    text-shadow: 
+        0 0 10px currentColor,
+        0 0 20px currentColor,
+        0 0 30px currentColor;
+}
+
+/* Gradient border */
+.gradient-border {
+    position: relative;
+    border: 2px solid transparent;
+    background: linear-gradient(rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.95)) padding-box,
+                linear-gradient(135deg, #00f0ff, #b967ff, #ff00ff) border-box;
+    border-radius: 1rem;
+}
+
+/* Pulse animation for playing state */
+@keyframes pulse-playing {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(0, 240, 255, 0.8);
+    }
+}
+
+.playing-pulse {
+    animation: pulse-playing 2s infinite;
+}
+
+/* Loading spinner */
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-left-color: #00f0ff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Fade in animation */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Sound wave animation */
+.sound-wave {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    height: 40px;
+}
+
+.sound-wave .bar {
+    width: 4px;
+    height: 20px;
+    background: linear-gradient(to top, #00f0ff, #b967ff);
+    border-radius: 2px;
+    animation: soundWave 1.5s ease-in-out infinite;
+}
+
+.sound-wave .bar:nth-child(2) { animation-delay: 0.1s; }
+.sound-wave .bar:nth-child(3) { animation-delay: 0.2s; }
+.sound-wave .bar:nth-child(4) { animation-delay: 0.3s; }
+.sound-wave .bar:nth-child(5) { animation-delay: 0.4s; }
+.sound-wave .bar:nth-child(6) { animation-delay: 0.5s; }
+.sound-wave .bar:nth-child(7) { animation-delay: 0.6s; }
+.sound-wave .bar:nth-child(8) { animation-delay: 0.7s; }
+
+@keyframes soundWave {
+    0%, 100% {
+        height: 20px;
+    }
+    50% {
+        height: 40px;
+    }
+}
+
+/* Progress bar custom styling */
+.progress-bar-custom {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-bar-custom::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: #00f0ff;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.8);
+}
+
+.progress-bar-custom::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: #00f0ff;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.8);
+}
+
+/* Equalizer sliders */
+.equalizer-slider {
+    -webkit-appearance: slider-vertical;
+    width: 6px;
+    height: 120px;
+    background: linear-gradient(to top, #00f0ff, #b967ff, #ff00ff);
+    border-radius: 3px;
+    outline: none;
+}
+
+.equalizer-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+/* Utility classes */
+.text-gradient {
+    background: linear-gradient(135deg, #00f0ff, #b967ff, #ff00ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.bg-grid {
+    background-image: 
+        linear-gradient(rgba(0, 240, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 240, 255, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+}
+
+/* Card hover effects */
+.card-hover {
+    transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Line clamp utilities */
+.line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .sound-wave .bar {
+        width: 3px;
+    }
+    
+    .progress-bar-custom {
+        height: 4px;
+    }
+    
+    .progress-bar-custom::-webkit-slider-thumb {
+        width: 12px;
+        height: 12px;
+    }
+}
+
+/* Print styles */
+@media print {
+    .no-print {
+        display: none;
+    }
+}
+
+/* Focus styles for accessibility */
+:focus-visible {
+    outline: 2px solid #00f0ff;
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* Disabled state */
+.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
