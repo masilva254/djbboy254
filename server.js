@@ -829,7 +829,6 @@ app.use((error, req, res, next) => {
 
 // Database connection
 // Initialize Redis (with error handling)
-let redis;
 try {
   if (process.env.REDIS_URL) {
     redis = new Redis(process.env.REDIS_URL);
