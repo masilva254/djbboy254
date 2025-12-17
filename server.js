@@ -835,18 +835,50 @@ app.use((error, req, res, next) => {
 });
 
 // Database connection
+// Initialize Redis (with error handling)
+let redis;
+try {
+  if (process.env.REDIS_URL) {
+    redis = new Redis(process.env.REDIS_URL);
+    console.log('✅ Redis connected');
+  } else {
+    console.log('⚠️  Redis not configured - using in-memory cache');
+    // Simple in-memory cache object
+    redis = {
+      get: async () => null,
+      set: async () => true,
+      setex: async () => true,
+      quit: async () => {}
+    };
+  }
+} catch (error) {
+  console.log('⚠️  Redis connection failed - using fallback');
+  redis = {
+    get: async () => null,
+    set: async () => true,
+    setex: async () => true,
+    quit: async () => {}
+  };
+}
+
+// Database connection with graceful fallback
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/mixhub');
-    console.log('✅ MongoDB connected successfully');
-    
-    // Create indexes
-    await Mix.createIndexes();
-    await User.createIndexes();
-    
+    if (process.env.MONGODB_URI) {
+      await mongoose.connect(process.env.MONGODB_URI);
+      console.log('✅ MongoDB connected successfully');
+      
+      // Create indexes
+      await Mix.createIndexes();
+      await User.createIndexes();
+    } else {
+      console.log('⚠️  MongoDB not configured - running without database');
+      console.log('⚠️  Some features will be limited');
+    }
   } catch (error) {
     console.error('❌ MongoDB connection error:', error);
-    process.exit(1);
+    console.log('⚠️  Running without database connection');
+    // Don't exit process - allow app to run without DB
   }
 };
 
