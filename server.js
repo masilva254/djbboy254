@@ -769,39 +769,39 @@ app.post('/api/favorites/:videoId', async (req, res) => {
 
 // Clean routes for HTML pages (no .html extension)
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/dashboard.html'));
+  res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
 app.get('/dashboard', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/dashboard.html'));
+  res.sendFile(path.join(__dirname, 'public/dashboard.html'));
 });
 
 app.get('/player', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/player.html'));
+  res.sendFile(path.join(__dirname, 'public/player.html'));
 });
 
 app.get('/equalizer', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/equalizer.html'));
+  res.sendFile(path.join(__dirname, 'public/equalizer.html'));
 });
 
 app.get('/upload', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/upload.html'));
+  res.sendFile(path.join(__dirname, 'public/upload.html'));
 });
 
 app.get('/playlists', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/playlists.html'));
+  res.sendFile(path.join(__dirname, 'public/playlists.html'));
 });
 
 app.get('/profile', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/profile.html'));
+  res.sendFile(path.join(__dirname, 'public/profile.html'));
 });
 
 app.get('/downloads', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/downloads.html'));
+  res.sendFile(path.join(__dirname, 'public/downloads.html'));
 });
 
 app.get('/settings', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/settings.html'));
+  res.sendFile(path.join(__dirname, 'public/settings.html'));
 });
 
 // 404 handler
