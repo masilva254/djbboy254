@@ -37,7 +37,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Initialize Redis
-const redis = new Redis(process.env.REDIS_URL || 'redis://localhost:6379');
+
 
 // Configure Cloudinary
 cloudinary.v2.config({
@@ -838,6 +838,7 @@ app.use((error, req, res, next) => {
 
 // Database connection
 // Initialize Redis (with error handling)
+let redis;
 try {
   if (process.env.REDIS_URL) {
     redis = new Redis(process.env.REDIS_URL);
