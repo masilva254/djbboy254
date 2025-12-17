@@ -21,6 +21,15 @@ import { promisify } from 'util';
 dotenv.config();
 
 // Initialize Express
+// Initialize Express - THIS MUST EXIST!
+const app = express();  // ← THIS LINE IS MISSING
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: process.env.CLIENT_URL || '*',
+    credentials: true
+  }
+});
 
 
 // Fix for __dirname in ES modules
